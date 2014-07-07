@@ -1,11 +1,20 @@
-angular.module('quick', ['ngRoute'])
-.config(function($routeProvider, $httpProvider){
-  $routeProvider
-    .when('/index', {
-      templateUrl: 'index.html',
-      controller: 'mainController'
-    })
-    .otherwise({
-      redirectTo: '/'
-    });
-})
+angular.module('quick', [
+               'quick.services',
+               'quick.button',
+               'quick.main',
+               'quick.search',
+               'ngRoute']);
+
+// .config(function($routeProvider){
+//   $routeProvider
+//     .when('/index', {
+//       templateUrl: 'app/main.html',
+//       controller: 'mainController'
+//     })
+//     .otherwise({
+//       redirectTo: '/index'
+//     });
+// })
+// .run(function ($rootScope, $location) {
+
+// });
