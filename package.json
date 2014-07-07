@@ -1,0 +1,22 @@
+{
+  "name": "quick",
+  "version": "0.0.0",
+  "description": "alpha",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wlabranche/quick.git"
+  },
+  "author": "will labranche",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wlabranche/quick/issues"
+  },
+  "homepage": "https://github.com/wlabranche/quick",
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}
