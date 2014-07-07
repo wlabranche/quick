@@ -1,6 +1,5 @@
 angular.module('quick', [
                'quick.services',
-               'quick.button',
                'quick.main',
                'quick.search',
                'ngRoute']);
