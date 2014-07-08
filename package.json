@@ -18,5 +18,10 @@
   "homepage": "https://github.com/wlabranche/quick",
   "devDependencies": {
     "grunt": "^0.4.5"
+  },
+  "dependencies": {
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-uglify": "^0.5.0",
+    "grunt-contrib-watch": "^0.6.1"
   }
 }
