@@ -48,8 +48,8 @@ angular.module('quick.services',['firebase'])
 
   var lameHardCoded = [
     {name: 'City Beer Store', beer: cityBeer},
-    {name: 'Mikkeller Bar', beer: []},
-    {name: 'Cellarmaker Brewing', beer: []}
+    {name: 'Mikkeller Bar', beer: mikkeller},
+    {name: 'Cellarmaker Brewing', beer: cellarMaker}
   ]
 
 
@@ -76,14 +76,14 @@ angular.module('quick.services',['firebase'])
     //user[beer] = { score: [] }
     // var server = getServer();
     // console.log(server)
-    console.log(beer);
+    console.log(beer.name, beer.brewery);
 
   };
 
   var rateBeer = function(beer, score, user){
     //on beer rating, store score with beer
     //user[beer].score.push(score);
-
+    //probably won't be functional
   };
 
 
@@ -161,6 +161,46 @@ var cityBeer = [{
   brewery: "Almanac Beer Company",
   name: "Farmer's Reserve Citrus"
 }]
+var cellarMaker = [{
+  brewery: "Cellarmaker Brewing",
+  name: "Mo' Nelson"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Hülly Lewis Pale Ale"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Equinox"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Are You Afraid of the Dank?"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Hop Killah"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Rye Be Bitter"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Coffee and Cigarettes"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Beertender's Breakfast"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Walker, SoMa Ranger"
+},
+{
+  brewery: "Cellarmaker Brewing",
+  name: "Cellarmaker Porter (Batch 1)"
+}];
 angular.module('quick.disliked', [])
 
 .controller('dislikedController', function($scope, Main){
@@ -176,7 +216,6 @@ angular.module('quick.liked', [])
   $scope.data = {};
   
   $scope.beerList = function(){
-    var url = $location.$$path
     // var test = Main.getBeer( url );
     // console.log(test);
       // .then(function(beer){
@@ -206,6 +245,25 @@ angular.module('quick.main', [])
 
   $scope.loadContent();
 });
+var list = "Mikkeller:Tenderloin IPA,Alpine:Hoppy Birthday,Mikkeller:Tenderloin Wit,Vapeur:Saison de Pipaix,Anchorage:Galaxy White,8 Wired:Saison Sauvin,8 Wired:Chardonnay Saison,Fort Point Brewing:Villager,Cellarmaker:Equinox,Blaugies Saison d’Epeautre,Monarchy/Kissmeyer:Viking Gose,Mikkeller:Årh Hvad?!,Hill Farmstead/Brasserie:Blaugies La Vermontoise,Off Color Scurry:Köttbusser/Alt Bier w/ honey & Molasses,De Ranke:XXX Bitter,Tahoe Mountain:Saphir du Bois,Tahoe Mountain:Higashino Farmhouse,Berryessa:Common Sense,Jolly Pumpkin/Anchorage:Calabaza Boreal,Cellarmaker:Rye Be Bitter".split(',');
+var list2 = "Mikkeller:Tenderloin Pils,Fort Point:Brewing Tosca,Firestone Walker:Pivo Hoppy Pils,Tahoe Mountain:French Pils,Firestone Walker:Easy Jack".split(',')
+var list3 = "Mikkeller:Orange Yuzu Glad I Said Porter BA,De La Senne:Jambe-de-Bois,Tahoe Mountain:Auld Bitch,Mikkeller:Big Worster Malaga,Mikkeller:Rauch Geek Breakfast,Mikkeller:Monk’s Elixir,Birra del Borgo:Caos,Nøgne Ø:Imperial Stout,AleSmith:Horny Devill,Malmgard Huvila:Arctic Circle,Dieu du Ciel:Péché Mortel,Stillwater:A Saison Darkly,AleSmith:Old Numbskull,Alvinne:Melchior BA,Mikkeller:Beer Geek Breakfast".split(','); 
+var list4 = "FreeWheel:London Calling,FreeWheel/Iron Bridge:Wenlock Stout".split(',')
+var test = function(arr){
+  var result = [];
+  for (var i = 0; i < arr.length; i++){
+    result.push(arr[i].split(':'));
+  }
+  return result;
+};
+var build = function(pairs){
+  var result = [];
+  for (var i = 0; i < pairs.length; i++){
+    result.push({ brewery: pairs[i][0], name: pairs[i][1] })
+  }
+  return result;
+};
+var mikkeller = build(test(list.concat(list2).concat(list3).concat(list4)));
 angular.module('quick.search', ['geolocation'])
 
 .controller('searchController', function($scope, Main, geolocation){
@@ -215,13 +273,18 @@ angular.module('quick.search', ['geolocation'])
   $scope.findBeer = function(){
     var user = 'testUser';
     $scope.data = {};
-    var userLocation = '944 market san francisco ca'; 
-    //defined in services.js
+    var userLocation = '944 market san francisco ca';
+
     $scope.data.beer = Main.getBeer(userLocation);
   };
-  
-  $scope.beerList = function(){
-    Main.storeBeer('cityBeer');
+
+  $scope.beerList = function(beers){
+    $scope.data.beerList = beers;
+    console.log($scope.data.beerList);
   };
+  $scope.saveBeer = function(beer){
+    console.log('yay');
+    Main.storeBeer(beer);
+  }
 
 });

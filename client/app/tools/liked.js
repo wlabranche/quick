@@ -4,7 +4,6 @@ angular.module('quick.liked', [])
   $scope.data = {};
   
   $scope.beerList = function(){
-    var url = $location.$$path
     // var test = Main.getBeer( url );
     // console.log(test);
       // .then(function(beer){

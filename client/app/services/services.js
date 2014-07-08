@@ -4,8 +4,8 @@ angular.module('quick.services',['firebase'])
 
   var lameHardCoded = [
     {name: 'City Beer Store', beer: cityBeer},
-    {name: 'Mikkeller Bar', beer: []},
-    {name: 'Cellarmaker Brewing', beer: []}
+    {name: 'Mikkeller Bar', beer: mikkeller},
+    {name: 'Cellarmaker Brewing', beer: cellarMaker}
   ]
 
 
@@ -32,14 +32,14 @@ angular.module('quick.services',['firebase'])
     //user[beer] = { score: [] }
     // var server = getServer();
     // console.log(server)
-    console.log(beer);
+    console.log(beer.name, beer.brewery);
 
   };
 
   var rateBeer = function(beer, score, user){
     //on beer rating, store score with beer
     //user[beer].score.push(score);
-
+    //probably won't be functional
   };
 
 

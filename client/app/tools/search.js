@@ -7,13 +7,18 @@ angular.module('quick.search', ['geolocation'])
   $scope.findBeer = function(){
     var user = 'testUser';
     $scope.data = {};
-    var userLocation = '944 market san francisco ca'; 
-    //defined in services.js
+    var userLocation = '944 market san francisco ca';
+
     $scope.data.beer = Main.getBeer(userLocation);
   };
-  
-  $scope.beerList = function(){
-    Main.storeBeer('cityBeer');
+
+  $scope.beerList = function(beers){
+    $scope.data.beerList = beers;
+    console.log($scope.data.beerList);
   };
+  $scope.saveBeer = function(beer){
+    console.log('yay');
+    Main.storeBeer(beer);
+  }
 
 });
