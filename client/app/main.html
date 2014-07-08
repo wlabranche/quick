@@ -11,6 +11,7 @@
                     </form>
                     <!-- make this less ugly, make then links that show tap lists -->
 
+                    <!-- map here at some point -->
                     <div class="locations"
                         ng-repeat="item in data.beer">
 
@@ -21,8 +22,8 @@
                                 <!-- make these clickable, to send to server and store on user -->
                                 <div class="beers" ng-repeat="beer in item.beer">
                                     <!-- add search and style, previously rated -->
-                                    <p name="breweryName">{{ beer.brewery }}</p>
-                                    <p name="beerName" ng-click="saveBeer(beer)">{{ beer.name }}</p>
+                                    <p class="breweryName">{{ beer.brewery }}</p>
+                                    <p class="beerName" ng-click="saveBeer(beer)">{{ beer.name }}</p>
                                 </div>
                             </div>
                         </div>

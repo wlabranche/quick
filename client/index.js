@@ -45,13 +45,19 @@ angular.module('quick.request', ['firebase'])
 angular.module('quick.services',['firebase'])
 
 .factory('Main', function($http, $location, $firebase){
+  var currentUser = null || "testUser";
+  var getServer = function(endpoint){
+    var test = $firebase(new Firebase('https://quick.firebaseio.com/' + endpoint));
+    return test;
+  };
+  var server = getServer(currentUser);
+  var lazyStored = {};
 
   var lameHardCoded = [
     {name: 'City Beer Store', beer: cityBeer},
     {name: 'Mikkeller Bar', beer: mikkeller},
     {name: 'Cellarmaker Brewing', beer: cellarMaker}
-  ]
-
+  ];
 
   var localBeer = function(location){
     location = location.split(' ').join('+');
@@ -59,36 +65,39 @@ angular.module('quick.services',['firebase'])
     return lameHardCoded;
   };
 
-  var getServer = function(){
-    var test = $firebase(new Firebase('https://quick.firebaseio.com/liked'));
-    return test;
-  };
-
-  var server = getServer();
-
   var getBeer = function(location){
     var beerStores = localBeer(location);
     return beerStores;
   };
 
-  var storeBeer = function(beer){
-    //store selected beer to user on server
-    server.$add({'beer': beer});
-    console.log(beer.name, beer.brewery, server);
-
+  var storeBeer = function(beer, user){
+    var key = JSON.stringify(beer);
+    if (!lazyStored[key]){
+      server.$add(beer);
+      lazyStored[key] = true
+      console.log(beer.name, beer.brewery, server);
+    }else{
+      console.log('already added');
+    }
   };
 
-  var rateBeer = function(beer, score, user){
+  var storedBeers = function(){
+    return server;
+  };
+
+  var rateBeer = function(beer, score){
     //on beer rating, store score with beer
     //user[beer].score.push(score);
     //probably won't be functional
+    
   };
 
   return {
     getServer: getServer,
     getBeer: getBeer,
     rateBeer: rateBeer,
-    storeBeer: storeBeer
+    storeBeer: storeBeer,
+    storedBeers: storedBeers
   }
 });
 angular.module('quick.availableBeer',['firebase'])
@@ -209,24 +218,11 @@ angular.module('quick.disliked', [])
 });
 angular.module('quick.liked', [])
 
-.controller('likedController', function($scope, $location, Main, Requests){
+.controller('likedController', function($scope, $location, Main){
   $scope.data = {};
   
   $scope.beerList = function(){
-    // var test = Main.getBeer( url );
-    // console.log(test);
-      // .then(function(beer){
-      //   console.log(beer);
-      //   if ( beer.length ){
-      //     $scope.data.goodBeer = beer;
-      //   }else{
-      //     $scope.data.goodBeer = ['things will go here at some point'];
-      //   }
-      //   console.log( $scope.data.goodBeer );
-      // })
-      // .catch(function( err ){
-      //   console.log( err );
-      // });
+      $scope.data.server = Main.storedBeers();
   };
 
   $scope.beerList();
