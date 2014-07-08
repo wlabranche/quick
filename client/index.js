@@ -1,12 +1,13 @@
 angular.module('quick', [
-               // 'firebase',
+               'firebase',
                'quick.liked',
                'quick.disliked',
                'quick.services',
                'quick.main',
                'quick.search',
+               'quick.request',
                'ngRoute'])
-//test comment5
+
 .config(function($routeProvider){
   $routeProvider
     .when('/index', {
@@ -25,28 +26,63 @@ angular.module('quick', [
       redirectTo: '/index'
     });
 });
-angular.module('quick.services', [])
+angular.module('quick.request', ['firebase'])
 
-.factory('Main', function($http){
+.factory('Requests', ['$firebase', function($firebase){
+  var ref = new Firebase('https://quick.firebaseio.com/');
+  return ref;
+}])
 
-  var findLocation = function(location){
-    return geolocation.getLocation()
-    .then(function(data){
-      $scope.coords = {lat:data.coords.latitude, long:data.coords.longitude};
-    })
-    .catch(function(err){
-      console.log(err);
-    });
+.controller('RequestController', ['$scope', 'Requests',
+            function($scope, request){
+              $scope.user = 'testUser';
+              $scope.name = 'beerName';
+              $scope.score = 'beerScore';
+              $scope.addBeer = function(){
+                // $scope.user.$add({$scope.name: $scope.score});
+              }
+}]);
+angular.module('quick.services',['firebase'])
+
+.factory('Main', function($http, $location, $firebase){
+
+  //should be called as site is rendered
+  //get beer should just 'reveal the sites'
+  var localBeer = function(location){
+
   };
 
-  var findBeer = function(style, location){
-    console.log(style, location);
+  var getServer = function(){
+    var test = $firebase(new Firebase('https://quick.firebaseio.com'));
+    return test;
+  };
+  var getBeer = function(location){
+    //return list of beers in area;
+    console.log(location);
+    // var beers = '123456789'.split('');
+
+    var beerStores = localBeer(location);
+    return beerStores;
+  };
+
+  var storeBeer = function(beer, user){
+    //store selected beer to user on server
+    //user[beer] = { score: [] }
+    // var server = getServer();
+    // console.log(server)
+  };
+
+  var rateBeer = function(beer, score, user){
+    //on beer rating, store score with beer
+    //user[beer].score.push(score);
 
   };
+
 
   return {
-    findLocation: findLocation,
-    findBeer: findBeer
+    getServer: getServer,
+    getBeer: getBeer,
+    rateBeer: rateBeer
   }
 });
 angular.module('quick.disliked', [])
@@ -60,16 +96,28 @@ angular.module('quick.disliked', [])
 });
 angular.module('quick.liked', [])
 
-.controller('likedController', function($scope, Main){
-
+.controller('likedController', function($scope, $location, Main, Requests){
   $scope.data = {};
   
-  $scope.data.goodBeers = [];
-
   $scope.beerList = function(){
-
+    var url = $location.$$path
+    // var test = Main.getBeer( url );
+    // console.log(test);
+      // .then(function(beer){
+      //   console.log(beer);
+      //   if ( beer.length ){
+      //     $scope.data.goodBeer = beer;
+      //   }else{
+      //     $scope.data.goodBeer = ['things will go here at some point'];
+      //   }
+      //   console.log( $scope.data.goodBeer );
+      // })
+      // .catch(function( err ){
+      //   console.log( err );
+      // });
   };
 
+  $scope.beerList();
 });
 angular.module('quick.main', [])
 
@@ -89,14 +137,16 @@ angular.module('quick.search', ['geolocation'])
   $scope.data = {};
 
   $scope.findBeer = function(){
+    var user = 'testUser';
     var beer = $scope.data.text || 'beer';
     $scope.data.text = null;
-
-    // var userLocation = Main.findLocation();
     var userLocation = '944 market san francisco ca';
+    var server = Main.getServer();
 
-    Main.findBeer(beer, userLocation);
-
+    //defined in services.js
+    $scope.data.beer = Main.getBeer(beer, userLocation);
+    
+    console.log($scope.data.beer);
   };
 
 });

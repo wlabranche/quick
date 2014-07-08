@@ -1,12 +1,13 @@
 angular.module('quick', [
-               // 'firebase',
+               'firebase',
                'quick.liked',
                'quick.disliked',
                'quick.services',
                'quick.main',
                'quick.search',
+               'quick.request',
                'ngRoute'])
-//test comment5
+
 .config(function($routeProvider){
   $routeProvider
     .when('/index', {

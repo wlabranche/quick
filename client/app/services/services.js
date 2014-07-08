@@ -1,24 +1,43 @@
-angular.module('quick.services', [])
+angular.module('quick.services',['firebase'])
 
-.factory('Main', function($http){
+.factory('Main', function($http, $location, $firebase){
 
-  var findLocation = function(location){
-    return geolocation.getLocation()
-    .then(function(data){
-      $scope.coords = {lat:data.coords.latitude, long:data.coords.longitude};
-    })
-    .catch(function(err){
-      console.log(err);
-    });
-  };
-
-  var findBeer = function(style, location){
-    console.log(style, location);
+  //should be called as site is rendered
+  //get beer should just 'reveal the sites'
+  var localBeer = function(location){
 
   };
+
+  var getServer = function(){
+    var test = $firebase(new Firebase('https://quick.firebaseio.com'));
+    return test;
+  };
+  var getBeer = function(location){
+    //return list of beers in area;
+    console.log(location);
+    // var beers = '123456789'.split('');
+
+    var beerStores = localBeer(location);
+    return beerStores;
+  };
+
+  var storeBeer = function(beer, user){
+    //store selected beer to user on server
+    //user[beer] = { score: [] }
+    // var server = getServer();
+    // console.log(server)
+  };
+
+  var rateBeer = function(beer, score, user){
+    //on beer rating, store score with beer
+    //user[beer].score.push(score);
+
+  };
+
 
   return {
-    findLocation: findLocation,
-    findBeer: findBeer
+    getServer: getServer,
+    getBeer: getBeer,
+    rateBeer: rateBeer
   }
 });
