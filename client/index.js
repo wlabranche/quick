@@ -46,21 +46,17 @@ angular.module('quick.services',['firebase'])
 
 .factory('Main', function($http, $location, $firebase){
 
-  //should be called as site is rendered
-  //get beer should just 'reveal the sites'
-  // var request = {
-  //   "oauth_consumer_key": "JwmBYaWKL8K_GeuYdqHAkg",
-  //   "oauth_token": "IgoVpxaWJ8YZ4CSAYxg7h1a2Etff1qYA",
-  //   "oauth_signature_method": "hmac-sha1",
-  //   "oauth_signature": "CLamCVCU6-vlhKi3e6GjMg"
+  var lameHardCoded = [
+    {name: 'City Beer Store', beer: cityBeer},
+    {name: 'Mikkeller Bar', beer: []},
+    {name: 'Cellarmaker Brewing', beer: []}
+  ]
 
-  // };
 
   var localBeer = function(location){
     location = location.split(' ').join('+');
     var url = 'http://api.yelp.com/v2/search?term=beer&location=' + location;
-    console.log(url);
-    return ['City Beer Store', 'Mikkeller Bar', 'Cellarmaker Brewing'];
+    return lameHardCoded;
   };
 
   var getServer = function(){
@@ -75,11 +71,12 @@ angular.module('quick.services',['firebase'])
     return beerStores;
   };
 
-  var storeBeer = function(beer, user){
+  var storeBeer = function(beer){
     //store selected beer to user on server
     //user[beer] = { score: [] }
     // var server = getServer();
     // console.log(server)
+    console.log(beer);
 
   };
 
@@ -93,9 +90,77 @@ angular.module('quick.services',['firebase'])
   return {
     getServer: getServer,
     getBeer: getBeer,
-    rateBeer: rateBeer
+    rateBeer: rateBeer,
+    storeBeer: storeBeer
   }
 });
+angular.module('quick.availableBeer',['firebase'])
+
+.factory('Stores', function($http, $firebase){
+  
+});
+var cityBeer = [{
+  brewery: "Berryessa Brewing Company",
+  name: "Common Sense-California Common"
+},
+{
+  brewery: "St. Bernardus",
+  name: "Tripel"
+},
+{
+  brewery: "Avery Brewing Company",
+  name: "Karma-Belgian Style Pale"
+},
+
+{
+  brewery: "Speakeasy Ales and Lagers",
+  name: "Baby Daddy-Session IPA"
+},
+{
+  brewery: "Anchor Brewing Company",
+  name: "Liberty Ale"
+},
+{
+  brewery: "AleSmith Brewing", 
+  name: "CompanyIPA"
+},
+{
+  brewery: "Golden Road Brewing", 
+  name: "Darts Away IPA-Imperial IPA"
+},
+{
+  brewery: "Berryessa Brewing Company",
+  name: "Double Tap IPA-Double IPA"
+},
+
+{
+  brewery: "Speakeasy Ales and Lagers",
+  name: "Payback Porter"
+},
+{
+  brewery: "Russian River Brewing Company",
+  name: "Benediction"
+},
+{
+  brewery: "Speakeasy Ales and Lagers",
+  name: "Syndicate 02"
+},
+{
+  brewery: "Avery Brewing Company",
+  name: "Samael"
+},
+{
+  brewery: "Russian River Brewing Company",
+  name:"Sanctification"
+},
+{
+  brewery:"Stillwater Artisanal Ales and Westbrook Brewing",
+  name: "Gose Gone Wild"
+},
+{
+  brewery: "Almanac Beer Company",
+  name: "Farmer's Reserve Citrus"
+}]
 angular.module('quick.disliked', [])
 
 .controller('dislikedController', function($scope, Main){
@@ -150,11 +215,13 @@ angular.module('quick.search', ['geolocation'])
   $scope.findBeer = function(){
     var user = 'testUser';
     $scope.data = {};
-    var userLocation = '944 market san francisco ca';
-    // var server = Main.getServer();
+    var userLocation = '944 market san francisco ca'; 
     //defined in services.js
     $scope.data.beer = Main.getBeer(userLocation);
-    // console.log($scope.data.beer)
+  };
+  
+  $scope.beerList = function(){
+    Main.storeBeer('cityBeer');
   };
 
 });

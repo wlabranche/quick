@@ -9,16 +9,15 @@
                     <form name="beerForm" ng-submit="findBeer()" class="simple-form">
                         <button type="submit">where is the beer?</button>
                     </form>
+                    <!-- make this less ugly, make then links that show tap lists -->
                     <div class="locations"
                         ng-repeat="item in data.beer">
-                        <li>
-                            {{ item }}
-                        </li>
-
+                        <!-- <br> -->
+                            <p name="barName" ng-click="beerList()">{{ item.name }}</p>
                     </div>
 
                     <br>
-                    <p>things will go here at some point</p>
+                    <!-- make this conditional -->
                 </div>
 
             </div>
