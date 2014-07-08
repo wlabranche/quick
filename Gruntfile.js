@@ -19,6 +19,7 @@ module.exports = function(grunt) {
       scripts: {
         files: [
           'client/app/**/*.js',
+          'client/**/*.html'
         ],
         tasks: [
           'concat',

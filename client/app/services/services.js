@@ -16,7 +16,7 @@ angular.module('quick.services',['firebase'])
   };
 
   var getServer = function(){
-    var test = $firebase(new Firebase('https://quick.firebaseio.com'));
+    var test = $firebase(new Firebase('https://quick.firebaseio.com/liked'));
     return test;
   };
 
@@ -29,10 +29,8 @@ angular.module('quick.services',['firebase'])
 
   var storeBeer = function(beer){
     //store selected beer to user on server
-    //user[beer] = { score: [] }
-    // var server = getServer();
-    // console.log(server)
-    console.log(beer.name, beer.brewery);
+    server.$add({'beer': beer});
+    console.log(beer.name, beer.brewery, server);
 
   };
 
@@ -41,7 +39,6 @@ angular.module('quick.services',['firebase'])
     //user[beer].score.push(score);
     //probably won't be functional
   };
-
 
   return {
     getServer: getServer,
