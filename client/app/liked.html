@@ -5,8 +5,7 @@
 
                 <div class="col-lg-12" ng-controller="likedController">
                     <h1>liked</h1>
-                    <input ng-model='search' placeholder='find beer' />
-                    <div class="locations" ng-repeat="beer in data.server | filter:search">
+                    <div ng-repeat="beer in data.server">
                       <p class="breweryName">{{ beer.brewery }}</p>
                       <p class="beerName" >{{ beer.name }}</p>
                     </div>

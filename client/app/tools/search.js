@@ -5,7 +5,7 @@ angular.module('quick.search', ['geolocation'])
   $scope.data = {};
 
   $scope.findBeer = function(){
-    var user = 'testUser';
+    var user = user || 'Guest';
     $scope.data = {};
     var userLocation = '944 market san francisco ca';
 
@@ -19,6 +19,8 @@ angular.module('quick.search', ['geolocation'])
   $scope.saveBeer = function(beer){
     console.log('yay');
     Main.storeBeer(beer);
+    // console.log($scope.loginObj);
+    
   }
 
 });

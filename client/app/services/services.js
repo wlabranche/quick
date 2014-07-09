@@ -1,11 +1,18 @@
 angular.module('quick.services',['firebase'])
 
-.factory('Main', function($http, $location, $firebase){
-  var currentUser = null || "testUser";
+.factory('Main', function($http, $location, $firebase, $firebaseSimpleLogin){
   var getServer = function(endpoint){
     var test = $firebase(new Firebase('https://quick.firebaseio.com/' + endpoint));
     return test;
   };
+
+  var auth = function(){
+    var authURL = new Firebase('https://quick.firebaseio.com/');
+    return $firebaseSimpleLogin(authURL);
+  };
+
+
+  var currentUser = currentUser || "Guest";
   var server = getServer(currentUser);
   var lazyStored = {};
 
@@ -45,7 +52,7 @@ angular.module('quick.services',['firebase'])
     //on beer rating, store score with beer
     //user[beer].score.push(score);
     //probably won't be functional
-    
+
   };
 
   return {
@@ -53,6 +60,7 @@ angular.module('quick.services',['firebase'])
     getBeer: getBeer,
     rateBeer: rateBeer,
     storeBeer: storeBeer,
-    storedBeers: storedBeers
+    storedBeers: storedBeers,
+    auth: auth
   }
 });

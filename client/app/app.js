@@ -6,6 +6,7 @@ angular.module('quick', [
                'quick.main',
                'quick.search',
                'quick.request',
+               'quick.login',
                'ngRoute'])
 
 .config(function($routeProvider){

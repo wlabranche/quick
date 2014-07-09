@@ -6,6 +6,7 @@ angular.module('quick', [
                'quick.main',
                'quick.search',
                'quick.request',
+               'quick.login',
                'ngRoute'])
 
 .config(function($routeProvider){
@@ -26,6 +27,7 @@ angular.module('quick', [
       redirectTo: '/index'
     });
 });
+
 angular.module('quick.request', ['firebase'])
 
 .factory('Requests', ['$firebase', function($firebase){
@@ -44,12 +46,19 @@ angular.module('quick.request', ['firebase'])
 }]);
 angular.module('quick.services',['firebase'])
 
-.factory('Main', function($http, $location, $firebase){
-  var currentUser = null || "testUser";
+.factory('Main', function($http, $location, $firebase, $firebaseSimpleLogin){
   var getServer = function(endpoint){
     var test = $firebase(new Firebase('https://quick.firebaseio.com/' + endpoint));
     return test;
   };
+
+  var auth = function(){
+    var authURL = new Firebase('https://quick.firebaseio.com/');
+    return $firebaseSimpleLogin(authURL);
+  };
+
+
+  var currentUser = currentUser || "Guest";
   var server = getServer(currentUser);
   var lazyStored = {};
 
@@ -89,7 +98,7 @@ angular.module('quick.services',['firebase'])
     //on beer rating, store score with beer
     //user[beer].score.push(score);
     //probably won't be functional
-    
+
   };
 
   return {
@@ -97,7 +106,8 @@ angular.module('quick.services',['firebase'])
     getBeer: getBeer,
     rateBeer: rateBeer,
     storeBeer: storeBeer,
-    storedBeers: storedBeers
+    storedBeers: storedBeers,
+    auth: auth
   }
 });
 angular.module('quick.availableBeer',['firebase'])
@@ -227,6 +237,17 @@ angular.module('quick.liked', [])
 
   $scope.beerList();
 });
+angular.module('quick.login', [])
+
+.controller('loginController', function($scope, Main){
+
+  $scope.loginObj = Main.auth();
+
+  $scope.login = function(){
+    $scope.loginObj.$login('google');
+  };
+  // console.log(auth.login);
+});
 angular.module('quick.main', [])
 
 .controller('mainController', function($scope, Main){
@@ -264,7 +285,7 @@ angular.module('quick.search', ['geolocation'])
   $scope.data = {};
 
   $scope.findBeer = function(){
-    var user = 'testUser';
+    var user = user || 'Guest';
     $scope.data = {};
     var userLocation = '944 market san francisco ca';
 
@@ -278,6 +299,8 @@ angular.module('quick.search', ['geolocation'])
   $scope.saveBeer = function(beer){
     console.log('yay');
     Main.storeBeer(beer);
+    // console.log($scope.loginObj);
+    
   }
 
 });
